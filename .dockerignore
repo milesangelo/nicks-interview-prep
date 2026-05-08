@@ -1,0 +1,10 @@
+node_modules
+apps/web/dist
+coverage
+npm-debug.log*
+*.log
+.env
+.env.*
+.git
+.cursor
+.DS_Store

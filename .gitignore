@@ -1,0 +1,30 @@
+# Dependencies at the repo root or in any workspace/package.
+node_modules/
+**/node_modules/
+
+# Build and test output
+dist/
+build/
+coverage/
+apps/web/dist/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.kubeconfig
+*.tfstate
+*.tfvars
+
+# Logs and OS/editor noise
+*.log
+npm-debug.log*
+.DS_Store
+.vscode/
+.idea/

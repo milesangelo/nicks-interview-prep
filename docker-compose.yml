@@ -1,0 +1,73 @@
+services:
+  legacy:
+    build:
+      context: .
+      dockerfile: docker/legacy-php/Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./apps/legacy:/var/www/html
+    environment:
+      DB_HOST: mysql
+      DB_NAME: ${DB_NAME:-reading_list}
+      DB_USER: ${DB_USER:-reading_user}
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+      args:
+        NPM_STRICT_SSL: "false"
+    working_dir: /workspace
+    command: npm --workspace apps/api run dev
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: mysql
+      DB_NAME: ${DB_NAME:-reading_list}
+      DB_USER: ${DB_USER:-reading_user}
+      DB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      PORT: ${PORT:-3000}
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+      args:
+        NPM_STRICT_SSL: "false"
+    working_dir: /workspace
+    command: npm --workspace apps/web run dev
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_PROXY_TARGET: ${VITE_API_PROXY_TARGET:-http://api:3000}
+    depends_on:
+      - api
+
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-reading_list}
+      MYSQL_USER: ${DB_USER:-reading_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p\"$${MYSQL_ROOT_PASSWORD}\""]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  mysql_data:

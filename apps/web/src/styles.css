@@ -1,0 +1,114 @@
+:root {
+  color-scheme: light;
+  --background: #edf4f7;
+  --panel: #ffffff;
+  --text: #18242b;
+  --muted: #60727c;
+  --border: #d6e2e7;
+  --accent: #256d85;
+  --accent-dark: #16485a;
+  --success: #2f6f3e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+}
+
+.page {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.hero {
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  margin: 0 0 8px;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.hero p {
+  max-width: 760px;
+  margin: 0;
+  color: var(--muted);
+}
+
+.eyebrow {
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.panel {
+  margin-bottom: 24px;
+  padding: 24px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(24, 36, 43, 0.08);
+}
+
+.panel h2 {
+  margin: 0 0 18px;
+}
+
+.message {
+  margin: 0;
+  font-weight: 700;
+}
+
+.message.success {
+  color: var(--success);
+}
+
+.books {
+  display: grid;
+  gap: 14px;
+}
+
+.book-card {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fbfdfe;
+}
+
+.book-card h3 {
+  margin: 0 0 4px;
+}
+
+.book-meta,
+.book-notes {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
+.book-badge {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #ddecf1;
+  color: var(--accent-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .panel {
+    padding: 18px;
+  }
+}
